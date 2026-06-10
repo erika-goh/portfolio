@@ -31,8 +31,8 @@
         --glass-shadow-lg:
           0 20px 60px rgba(0, 0, 0, 0.4),
           inset 0 1.5px 0 rgba(255, 255, 255, 0.2);
-        --blur: blur(24px) saturate(180%);
-        --blur-heavy: blur(40px) saturate(200%);
+        --blur: blur(14px);
+        --blur-heavy: blur(20px);
       }
       *,
       *::before,
@@ -79,16 +79,9 @@
             rgba(70, 70, 80, 0.06) 0%,
             transparent 50%
           ),
-          linear-gradient(160deg, #000000 0%, #010101 70%, #3f3f3f 100%);
-        animation: bgShift 22s ease-in-out infinite alternate;
-      }
-      @keyframes bgShift {
-        0% {
-          filter: hue-rotate(0deg);
-        }
-        100% {
-          filter: hue-rotate(5deg);
-        }
+          #0a0a0a;
+        transform: translateZ(0);
+        will-change: transform;
       }
       .bg-canvas::after {
         content: "";
@@ -122,9 +115,9 @@
         right: 0;
         z-index: 200;
         height: 60px;
-        background: rgba(240, 240, 240, 0.08);
-        backdrop-filter: blur(30px) saturate(200%);
-        -webkit-backdrop-filter: blur(30px) saturate(200%);
+        background: rgba(20, 20, 20, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border-bottom: 1px solid rgba(200, 200, 200, 0.12);
         box-shadow:
           0 1px 0 rgba(200, 200, 200, 0.04),
@@ -357,23 +350,25 @@
         justify-content: center;
         color: #76b900;
         text-decoration: none;
-        transition: all 0.3s;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          background 0.25s ease,
+          border-color 0.25s ease,
+          color 0.25s ease;
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(184, 184, 184, 0.2);
         box-shadow:
           0 4px 16px rgba(0, 0, 0, 0.3),
           inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        will-change: transform;
       }
       .icon-link:hover {
         background: rgba(184, 184, 184, 0.18);
         border-color: rgba(45, 106, 79, 0.4);
         color: #fff;
-        transform: translateY(-4px) scale(1.06);
-        box-shadow:
-          0 10px 30px rgba(45, 106, 79, 0.25),
-          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        transform: translate3d(0, -3px, 0) scale(1.05);
       }
       .icon-link svg {
         width: 20px;
@@ -542,7 +537,10 @@
         margin-bottom: 1.8rem;
         padding: 1.8rem 2rem;
         border-radius: 20px;
-        transition: all 0.3s;
+        transition:
+          background 0.3s ease,
+          border-color 0.3s ease;
+        contain: layout paint;
       }
       .timeline-item::before {
         content: "";
@@ -557,7 +555,8 @@
         box-shadow: 0 0 14px rgba(45, 106, 79, 0.5);
       }
       .timeline-item:hover {
-        transform: translateX(6px);
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(45, 106, 79, 0.25);
       }
       .job-header {
         display: flex;
@@ -601,9 +600,13 @@
       .club-card {
         padding: 1.75rem;
         border-radius: 22px;
-        transition: all 0.3s;
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.3s ease;
         position: relative;
         overflow: hidden;
+        contain: layout paint;
+        will-change: transform;
       }
       .club-card::before {
         content: "";
@@ -616,9 +619,9 @@
         border-radius: 3px 3px 0 0;
       }
       .club-card:hover {
-        transform: translateY(-6px);
+        transform: translate3d(0, -5px, 0);
         box-shadow:
-          0 20px 60px rgba(45, 106, 79, 0.15),
+          0 16px 40px rgba(45, 106, 79, 0.15),
           inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
       }
       .club-emoji {
@@ -658,10 +661,12 @@
       .skill-group {
         padding: 1.6rem;
         border-radius: 20px;
-        transition: all 0.3s;
+        transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        contain: layout paint;
+        will-change: transform;
       }
       .skill-group:hover {
-        transform: translateY(-4px);
+        transform: translate3d(0, -4px, 0);
       }
       .skill-group-title {
         font-family: "Playfair Display", serif;
@@ -720,14 +725,7 @@
         border-top: 1px solid rgba(184, 184, 184, 0.08);
       }
       .museum-lights {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 180px;
-        pointer-events: none;
-        display: flex;
-        justify-content: space-around;
+        display: none;
       }
       .wall-light {
         width: 1px;
@@ -804,10 +802,12 @@
         padding: 2rem max(1.5rem, 6vw) 3rem;
         overflow-x: auto;
         overflow-y: visible;
-        scroll-snap-type: x mandatory;
+        scroll-snap-type: x proximity;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         cursor: grab;
+        scroll-behavior: smooth;
+        overscroll-behavior-x: contain;
       }
       .gallery-track:active {
         cursor: grabbing;
@@ -821,10 +821,12 @@
         width: clamp(300px, 80vw, 380px);
         scroll-snap-align: center;
         cursor: pointer;
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+        transform: translateZ(0);
       }
       .artwork-card:hover {
-        transform: translateY(-12px) scale(1.02);
+        transform: translate3d(0, -10px, 0) scale(1.02);
       }
       .artwork-card:active {
         transform: scale(0.97);
@@ -832,15 +834,16 @@
       .artwork-glass {
         border-radius: 26px;
         overflow: hidden;
-        background: rgba(255, 255, 255, 0.09);
-        backdrop-filter: blur(32px) saturate(180%);
-        -webkit-backdrop-filter: blur(32px) saturate(180%);
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.15);
         box-shadow:
           0 0 0 0.5px rgba(255, 255, 255, 0.08),
           0 20px 50px rgba(0, 0, 0, 0.5),
           inset 0 1.5px 0 rgba(255, 255, 255, 0.2),
           inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
       }
       .artwork-card:hover .artwork-glass {
         background: rgba(255, 255, 255, 0.13);
@@ -1340,6 +1343,18 @@
               />
             </svg>
           </a>
+          <a
+            href="https://medium.com/@erika_goh"
+            target="_blank"
+            class="icon-link"
+            aria-label="Medium"
+          >
+            <svg fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795H24v.403l-1.916 1.837c-.165.126-.247.333-.213.538v13.498c-.034.204.048.411.213.537l1.871 1.837v.403h-9.412v-.403l1.939-1.882c.19-.19.19-.246.19-.537V7.794l-5.389 13.688h-.728L4.28 7.794v9.174c-.052.385.076.774.347 1.052l2.521 3.058v.404H0v-.404l2.521-3.058c.27-.279.39-.67.325-1.052V6.887z"
+              />
+            </svg>
+          </a>
         </div>
       </div>
       <div class="scroll-hint">
@@ -1389,6 +1404,30 @@
         <div class="section-eyebrow"><span>02 .experience() </span></div>
         <h2 class="section-title">Work <em>Experience</em></h2>
         <div class="timeline">
+          <div class="timeline-item glass">
+            <div class="job-header">
+              <div class="job-title">Software Developer</div>
+              <div class="job-date">May – Aug 2026</div>
+            </div>
+            <div class="job-company">
+              The Adpharm · Co-op · Oakville, ON
+            </div>
+            <div class="job-desc">
+              • Developed and maintained <b>5+</b> responsive web applications
+              and internal tools using TypeScript and React for pharmaceutical
+              and medical communications platforms, deployed and maintained on
+              Vercel and AWS. <br />
+              • Delivered <b>15+</b> production features through Agile sprints,
+              contributing to code reviews, testing, and deployment workflows
+              alongside the Adpharm Digital engineering team. <br />
+              • Built Python-based automation tools that reduced manual work by
+              <b>~40%</b> across internal processes. <br />
+              • Worked across a modern stack including React Router, Hono, and
+              Vite, with hands-on exposure to Infrastructure as Code
+              (Terraform/Terragrunt) and serverless platforms like Vercel and
+              Neon.
+            </div>
+          </div>
           <div class="timeline-item glass">
             <div class="job-header">
               <div class="job-title">
